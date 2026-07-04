@@ -71,3 +71,15 @@ h1 {
    color: hsl(0, 0%, 20%);
 }
 
+.todo-list {
+  width: 500px;
+  margin-top: 20px;
+}
+
+.todo-list p {
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+   background-color: hsl(0, 0%, 98%);
+  border: 1px solid hsl(0, 0%, 85%);
+}
