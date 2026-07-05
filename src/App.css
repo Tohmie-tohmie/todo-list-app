@@ -77,9 +77,29 @@ h1 {
 }
 
 .todo-list p {
+  margin: 0;
+}
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 15px;
   margin-bottom: 10px;
-  border-radius: 8px;
-   background-color: hsl(0, 0%, 98%);
   border: 1px solid hsl(0, 0%, 85%);
+  border-radius: 8px;
+  background-color: hsl(0, 0%, 98%);
 }
+
+.delete-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: hsl(0, 80%, 55%);
+  color: white;
+}
+
+.delete-btn:hover {
+   background-color: hsl(0, 80%, 45%);
+}
+
