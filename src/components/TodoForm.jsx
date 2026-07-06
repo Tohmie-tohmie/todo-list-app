@@ -12,6 +12,13 @@ export function TodoForm() {
       setTask(event.target.value);
     }
 
+    function handleKeyDown(event) {
+       if(event.key === "Enter") {
+         console.log("Enter pressed");
+             handleSubmit();
+       } 
+    }
+
     function handleSubmit() {
       if(task.trim() === "") {
           return;
@@ -38,6 +45,7 @@ export function TodoForm() {
             placeholder="Enter a task..."
             value={task}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             />
             <button className="add-btn"
             onClick={handleSubmit}>
