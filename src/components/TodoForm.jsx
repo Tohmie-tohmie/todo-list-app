@@ -2,11 +2,14 @@
 import { useState } from 'react';
 
 
+
 export function TodoForm() {
    
 
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
+  
+
 
     function handleChange(event) {
       setTask(event.target.value);
@@ -14,7 +17,6 @@ export function TodoForm() {
 
     function handleKeyDown(event) {
        if(event.key === "Enter") {
-         console.log("Enter pressed");
              handleSubmit();
        } 
     }
@@ -34,7 +36,6 @@ export function TodoForm() {
       });
        setTasks(updateTasks); 
     }
-  
 
   return(
    <>
@@ -53,15 +54,19 @@ export function TodoForm() {
             </button>
       </div>
             <div className="todo-list">
+              <p>total Tasks: {tasks.length}</p>
+
             {tasks.map((task, index) => (
-                <div key={index}
-                   className="task-item">
+               <div key={index}
+                   className="task-item"
+                   >
                   <p>{task}</p>
+
                   <button className="delete-btn"
                   onClick={() => deleteTask(index)}>
                     Delete
                    </button>
-                  </div>
+                  </div> 
             ))}
             </div>
     </>      
