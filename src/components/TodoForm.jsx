@@ -26,7 +26,13 @@ export function TodoForm() {
           return;
       }
 
-       setTasks([...tasks, task]);
+      setTasks([
+       ...tasks,
+      {
+    text: task,
+    completed: false,
+    },
+    ]);
         setTask("");
     }
 
@@ -36,6 +42,21 @@ export function TodoForm() {
       });
        setTasks(updateTasks); 
     }
+
+    function toggleComplete(indexToToggle) {
+  const updatedTasks = tasks.map((task, index) => {
+    if (index === indexToToggle) {
+      return {
+        ...task,
+        completed: !task.completed,
+      };
+    }
+
+    return task;
+  });
+
+  setTasks(updatedTasks);
+}
 
   return(
    <>
@@ -57,15 +78,22 @@ export function TodoForm() {
               <p>total Tasks: {tasks.length}</p>
 
             {tasks.map((task, index) => (
-               <div key={index}
-                   className="task-item"
-                   >
-                  <p>{task}</p>
+               <div
+                    key={index}
+                    className={`task-item ${task.completed ? "completed" : ""}`}
+                    onClick={() => toggleComplete(index)}
+                  >
+                  <p>{task.text}</p>
 
-                  <button className="delete-btn"
-                  onClick={() => deleteTask(index)}>
-                    Delete
-                   </button>
+                  <button
+                      className="delete-btn"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        deleteTask(index);
+                      }}
+                    >
+                      Delete
+                 </button>
                   </div> 
             ))}
             </div>
