@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 
@@ -7,9 +7,12 @@ export function TodoForm() {
    
 
   const [task, setTask] = useState("");
-  const [tasks, setTasks] = useState([]);
- const [editingIndex, setEditingIndex] = useState(null);
- const [editingText, setEditingText] = useState("");
+  const [tasks, setTasks] = useState(() => {
+  const savedTasks = localStorage.getItem("tasks");
+  return savedTasks ? JSON.parse(savedTasks) : [];
+ });
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingText, setEditingText] = useState("");
 
   
 
@@ -46,16 +49,16 @@ export function TodoForm() {
        setTasks(updateTasks); 
     }
 
-    function toggleComplete(indexToToggle) {
-       const updatedTasks = tasks.map((task, index) => {
-       if (index === indexToToggle) {
-      return {
-        ...task,
-        completed: !task.completed,
-      };
-    }
+   function toggleComplete(indexToToggle) {
+      const updatedTasks = tasks.map((task, index) => {
+         if (index === indexToToggle) {
+         return {
+          ...task,
+          completed: !task.completed,
+        };
+       }
 
-    return task;
+       return task;
   });
 
   setTasks(updatedTasks);
@@ -77,6 +80,14 @@ function saveTask(indexToSave) {
   setEditingIndex(null);
   setEditingText("");
 }
+
+
+useEffect(() => {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}, [tasks]);
+
+
+
 
   return(
    <>
