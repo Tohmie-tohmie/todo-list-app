@@ -112,3 +112,16 @@ h1 {
   background-color: #f2f2f2;
 }
 
+.edit-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: hsl(210, 100%, 50%);
+  color: white;
+  margin-right: 10px;
+}
+
+.edit-btn:hover {
+  background-color: hsl(210, 100%, 40%);
+}

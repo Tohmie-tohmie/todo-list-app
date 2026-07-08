@@ -8,6 +8,9 @@ export function TodoForm() {
 
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
+ const [editingIndex, setEditingIndex] = useState(null);
+ const [editingText, setEditingText] = useState("");
+
   
 
 
@@ -44,8 +47,8 @@ export function TodoForm() {
     }
 
     function toggleComplete(indexToToggle) {
-  const updatedTasks = tasks.map((task, index) => {
-    if (index === indexToToggle) {
+       const updatedTasks = tasks.map((task, index) => {
+       if (index === indexToToggle) {
       return {
         ...task,
         completed: !task.completed,
@@ -56,6 +59,23 @@ export function TodoForm() {
   });
 
   setTasks(updatedTasks);
+}
+
+function saveTask(indexToSave) {
+  const updatedTasks = tasks.map((task, index) => {
+    if (index === indexToSave) {
+      return {
+        ...task,
+        text: editingText,
+      };
+    }
+
+    return task;
+  });
+
+  setTasks(updatedTasks);
+  setEditingIndex(null);
+  setEditingText("");
 }
 
   return(
@@ -78,13 +98,45 @@ export function TodoForm() {
               <p>total Tasks: {tasks.length}</p>
 
             {tasks.map((task, index) => (
-               <div
+              <div
                     key={index}
                     className={`task-item ${task.completed ? "completed" : ""}`}
-                    onClick={() => toggleComplete(index)}
                   >
-                  <p>{task.text}</p>
-
+                     {editingIndex === index ? (
+                      <input
+                        type="text"
+                        value={editingText}
+                        onChange={(event) => setEditingText(event.target.value)}
+                        className="todo-input"
+                      />
+                    ) : (
+                      <p onClick={() => toggleComplete(index)}>
+                          {task.text}
+                      </p>
+                    )}
+                      
+                     {editingIndex === index ? (
+                 <button
+                          className="edit-btn"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            saveTask(index);
+                          }}
+                        >
+                          Save
+                        </button>
+                      ) : (
+                        <button
+                          className="edit-btn"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            setEditingIndex(index);
+                            setEditingText(task.text);
+                          }}
+                        >
+                          Edit
+                   </button>
+                      )}
                   <button
                       className="delete-btn"
                       onClick={(event) => {
@@ -96,6 +148,7 @@ export function TodoForm() {
                  </button>
                   </div> 
             ))}
+
             </div>
     </>      
   );
