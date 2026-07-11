@@ -14,6 +14,7 @@ export function TodoForm() {
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingText, setEditingText] = useState("");
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
 
   
 
@@ -84,12 +85,28 @@ function saveTask(idToSave) {
   setEditingText("");
 }
 
+function clearCompleted() {
+  const activeTasks = tasks.filter((task) => {
+    return !task.completed;
+  });
+
+  setTasks(activeTasks);
+}
+
 useEffect(() => {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }, [tasks]);
 
 
 const filteredTasks = tasks.filter((task) => {
+  const matchesSearch = task.text
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  if (!matchesSearch) {
+    return false;
+  }
+
   if (filter === "active") {
     return !task.completed;
   }
@@ -100,6 +117,12 @@ const filteredTasks = tasks.filter((task) => {
 
   return true;
 });
+
+ const totalTasks = tasks.length;
+
+ const activeTasks = tasks.filter((task) => !task.completed).length;
+
+ const completedTasks = tasks.filter((task) => task.completed).length;
 
 
   return(
@@ -118,8 +141,22 @@ const filteredTasks = tasks.filter((task) => {
               Add Task
             </button>
       </div>
+
+      <div className="search-container">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="🔍 Search tasks..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+         />
+      </div>
             <div className="todo-list">
-                    <p>Total Tasks: {tasks.length}</p>
+                  <div className="task-counter">
+                    <p>Total: {totalTasks}</p>
+                    <p>Active: {activeTasks}</p>
+                    <p>Completed: {completedTasks}</p>
+                  </div>
 
                     <div className="filter-buttons">
                       <button onClick={() => setFilter("all")}>
@@ -133,6 +170,10 @@ const filteredTasks = tasks.filter((task) => {
                       <button onClick={() => setFilter("completed")}>
                         Completed
                       </button>
+
+                      <button onClick={clearCompleted}>
+                           Clear Completed
+                     </button>
                     </div>
 
                     {filteredTasks.map((task) => (
