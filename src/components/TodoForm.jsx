@@ -13,6 +13,7 @@ export function TodoForm() {
  });
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingText, setEditingText] = useState("");
+  const [filter, setFilter] = useState("all");
 
   
 
@@ -33,40 +34,42 @@ export function TodoForm() {
       }
 
       setTasks([
-       ...tasks,
-      {
+  ...tasks,
+  {
+    id: Date.now(),
     text: task,
     completed: false,
-    },
-    ]);
+  },
+ ]);
         setTask("");
     }
 
-    function deleteTask(indexToDelete) {
-      const updateTasks = tasks.filter((task, index) => {
-        return index !== indexToDelete;
-      });
-       setTasks(updateTasks); 
-    }
-
-   function toggleComplete(indexToToggle) {
-      const updatedTasks = tasks.map((task, index) => {
-         if (index === indexToToggle) {
-         return {
-          ...task,
-          completed: !task.completed,
-        };
-       }
-
-       return task;
+  function deleteTask(idToDelete) {
+     const updatedTasks = tasks.filter((task) => {
+    return task.id !== idToDelete;
   });
 
   setTasks(updatedTasks);
 }
 
-function saveTask(indexToSave) {
-  const updatedTasks = tasks.map((task, index) => {
-    if (index === indexToSave) {
+function toggleComplete(idToToggle) {
+  const updatedTasks = tasks.map((task) => {
+    if (task.id === idToToggle) {
+      return {
+        ...task,
+        completed: !task.completed,
+      };
+    }
+
+    return task;
+  });
+
+  setTasks(updatedTasks);
+ } 
+
+function saveTask(idToSave) {
+  const updatedTasks = tasks.map((task) => {
+    if (task.id === idToSave) {
       return {
         ...task,
         text: editingText,
@@ -81,12 +84,22 @@ function saveTask(indexToSave) {
   setEditingText("");
 }
 
-
 useEffect(() => {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }, [tasks]);
 
 
+const filteredTasks = tasks.filter((task) => {
+  if (filter === "active") {
+    return !task.completed;
+  }
+
+  if (filter === "completed") {
+    return task.completed;
+  }
+
+  return true;
+});
 
 
   return(
@@ -106,14 +119,28 @@ useEffect(() => {
             </button>
       </div>
             <div className="todo-list">
-              <p>total Tasks: {tasks.length}</p>
+                    <p>Total Tasks: {tasks.length}</p>
 
-            {tasks.map((task, index) => (
+                    <div className="filter-buttons">
+                      <button onClick={() => setFilter("all")}>
+                        All
+                      </button>
+
+                      <button onClick={() => setFilter("active")}>
+                        Active
+                      </button>
+
+                      <button onClick={() => setFilter("completed")}>
+                        Completed
+                      </button>
+                    </div>
+
+                    {filteredTasks.map((task) => (
               <div
-                    key={index}
+                   key={task.id}
                     className={`task-item ${task.completed ? "completed" : ""}`}
                   >
-                     {editingIndex === index ? (
+                     {editingIndex === task.id ? (
                       <input
                         type="text"
                         value={editingText}
@@ -121,17 +148,17 @@ useEffect(() => {
                         className="todo-input"
                       />
                     ) : (
-                      <p onClick={() => toggleComplete(index)}>
+                      <p onClick={() => toggleComplete(task.id)}>
                           {task.text}
                       </p>
                     )}
                       
-                     {editingIndex === index ? (
+                     {editingIndex === task.id ? (
                  <button
                           className="edit-btn"
                           onClick={(event) => {
                             event.stopPropagation();
-                            saveTask(index);
+                           saveTask(task.id);
                           }}
                         >
                           Save
@@ -141,7 +168,7 @@ useEffect(() => {
                           className="edit-btn"
                           onClick={(event) => {
                             event.stopPropagation();
-                            setEditingIndex(index);
+                            setEditingIndex(task.id);
                             setEditingText(task.text);
                           }}
                         >
@@ -152,7 +179,7 @@ useEffect(() => {
                       className="delete-btn"
                       onClick={(event) => {
                         event.stopPropagation();
-                        deleteTask(index);
+                        deleteTask(task.id);
                       }}
                     >
                       Delete
