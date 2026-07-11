@@ -30,20 +30,30 @@ export function TodoForm() {
     }
 
     function handleSubmit() {
-      if(task.trim() === "") {
-          return;
-      }
+  if (task.trim() === "") {
+    return;
+  }
 
-      setTasks([
-  ...tasks,
-  {
-    id: Date.now(),
-    text: task,
-    completed: false,
-  },
- ]);
-        setTask("");
-    }
+  const taskExists = tasks.some(
+    (item) => item.text.toLowerCase() === task.trim().toLowerCase()
+  );
+
+  if (taskExists) {
+    alert("Task already exists!");
+    return;
+  }
+
+  setTasks([
+    ...tasks,
+    {
+      id: Date.now(),
+      text: task,
+      completed: false,
+    },
+  ]);
+
+  setTask("");
+}
 
   function deleteTask(idToDelete) {
      const updatedTasks = tasks.filter((task) => {
@@ -159,22 +169,31 @@ const filteredTasks = tasks.filter((task) => {
                   </div>
 
                     <div className="filter-buttons">
-                      <button onClick={() => setFilter("all")}>
-                        All
-                      </button>
+                        <button
+                          className={filter === "all" ? "active-filter" : ""}
+                          onClick={() => setFilter("all")}
+                        >
+                          All
+                        </button>
 
-                      <button onClick={() => setFilter("active")}>
-                        Active
-                      </button>
+                        <button
+                          className={filter === "active" ? "active-filter" : ""}
+                          onClick={() => setFilter("active")}
+                        >
+                          Active
+                        </button>
 
-                      <button onClick={() => setFilter("completed")}>
-                        Completed
-                      </button>
+                        <button
+                          className={filter === "completed" ? "active-filter" : ""}
+                          onClick={() => setFilter("completed")}
+                        >
+                          Completed
+                        </button>
 
-                      <button onClick={clearCompleted}>
-                           Clear Completed
-                     </button>
-                    </div>
+                        <button onClick={clearCompleted}>
+                          Clear Completed
+                        </button>
+                      </div>
 
                     {filteredTasks.map((task) => (
               <div

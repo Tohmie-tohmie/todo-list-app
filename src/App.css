@@ -145,6 +145,11 @@ h1 {
   background-color: hsl(0, 0%, 80%);
 }
 
+.filter-buttons button.active-filter {
+  background-color: hsl(140, 65%, 45%);
+  color: white;
+  font-weight: bold;
+}
 .task-counter {
   display: flex;
   justify-content: space-between;
