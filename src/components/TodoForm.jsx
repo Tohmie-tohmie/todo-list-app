@@ -194,58 +194,66 @@ const filteredTasks = tasks.filter((task) => {
                           Clear Completed
                         </button>
                       </div>
+                       
+                       {filteredTasks.length === 0 ? (
+                    <div className="empty-state">
+                      <h3>📝 No tasks yet</h3>
+                      <p>Add your first task above.</p>
+                    </div>
+                  ) : (
+                    filteredTasks.map((task) => (
+                      <div
+                        key={task.id}
+                        className={`task-item ${task.completed ? "completed" : ""}`}
+                      >
+                        {editingIndex === task.id ? (
+                          <input
+                            type="text"
+                            value={editingText}
+                            onChange={(event) => setEditingText(event.target.value)}
+                            className="todo-input"
+                          />
+                        ) : (
+                          <p onClick={() => toggleComplete(task.id)}>
+                            {task.text}
+                          </p>
+                        )}
 
-                    {filteredTasks.map((task) => (
-              <div
-                   key={task.id}
-                    className={`task-item ${task.completed ? "completed" : ""}`}
-                  >
-                     {editingIndex === task.id ? (
-                      <input
-                        type="text"
-                        value={editingText}
-                        onChange={(event) => setEditingText(event.target.value)}
-                        className="todo-input"
-                      />
-                    ) : (
-                      <p onClick={() => toggleComplete(task.id)}>
-                          {task.text}
-                      </p>
-                    )}
-                      
-                     {editingIndex === task.id ? (
-                 <button
-                          className="edit-btn"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                           saveTask(task.id);
-                          }}
-                        >
-                          Save
-                        </button>
-                      ) : (
+                        {editingIndex === task.id ? (
+                          <button
+                            className="edit-btn"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              saveTask(task.id);
+                            }}
+                          >
+                            Save
+                          </button>
+                        ) : (
+                          <button
+                            className="edit-btn"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              setEditingIndex(task.id);
+                              setEditingText(task.text);
+                            }}
+                          >
+                            Edit
+                          </button>
+                        )}
+
                         <button
-                          className="edit-btn"
+                          className="delete-btn"
                           onClick={(event) => {
                             event.stopPropagation();
-                            setEditingIndex(task.id);
-                            setEditingText(task.text);
+                            deleteTask(task.id);
                           }}
                         >
-                          Edit
-                   </button>
-                      )}
-                  <button
-                      className="delete-btn"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        deleteTask(task.id);
-                      }}
-                    >
-                      Delete
-                 </button>
-                  </div> 
-            ))}
+                          Delete
+                        </button>
+                      </div>
+                    ))
+                  )}
 
             </div>
     </>      
