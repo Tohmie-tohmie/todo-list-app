@@ -1,5 +1,9 @@
 
 import { useState, useEffect } from 'react';
+import { TaskCounter } from './TaskCounter';
+import { SearchBar } from './SearchBar';
+import { FilterButtons } from './FilterButtons';
+import { TaskItem } from './TaskItem';
 
 
 
@@ -15,6 +19,7 @@ export function TodoForm() {
   const [editingText, setEditingText] = useState("");
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [dueDate, setDueDate] = useState("");
 
   
 
@@ -49,10 +54,12 @@ export function TodoForm() {
       id: Date.now(),
       text: task,
       completed: false,
+      dueDate,
     },
-  ]);
+ ]);
 
   setTask("");
+  setDueDate("");
 }
 
   function deleteTask(idToDelete) {
@@ -135,127 +142,75 @@ const filteredTasks = tasks.filter((task) => {
  const completedTasks = tasks.filter((task) => task.completed).length;
 
 
-  return(
-   <>
-        <div className="todo-form">
-            <input
-            className="todo-input"
-            type="text" 
-            placeholder="Enter a task..."
-            value={task}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            />
-            <button className="add-btn"
-            onClick={handleSubmit}>
-              Add Task
-            </button>
-      </div>
+ return (
+  <>
+    <div className="todo-form">
+      <input
+        className="todo-input"
+        type="text"
+        placeholder="Enter a task..."
+        value={task}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+      />
 
-      <div className="search-container">
-          <input
-            type="text"
-            className="search-input"
-            placeholder="🔍 Search tasks..."
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-         />
-      </div>
-            <div className="todo-list">
-                  <div className="task-counter">
-                    <p>Total: {totalTasks}</p>
-                    <p>Active: {activeTasks}</p>
-                    <p>Completed: {completedTasks}</p>
-                  </div>
+      <input
+        className="date-input"
+        type="date"
+        value={dueDate}
+        onChange={(event) => setDueDate(event.target.value)}
+      />
 
-                    <div className="filter-buttons">
-                        <button
-                          className={filter === "all" ? "active-filter" : ""}
-                          onClick={() => setFilter("all")}
-                        >
-                          All
-                        </button>
+      <button
+        className="add-btn"
+        onClick={handleSubmit}
+      >
+        Add Task
+      </button>
+   </div>
 
-                        <button
-                          className={filter === "active" ? "active-filter" : ""}
-                          onClick={() => setFilter("active")}
-                        >
-                          Active
-                        </button>
+    <SearchBar
+      search={search}
+      setSearch={setSearch}
+  />
 
-                        <button
-                          className={filter === "completed" ? "active-filter" : ""}
-                          onClick={() => setFilter("completed")}
-                        >
-                          Completed
-                        </button>
+    <div className="todo-list">
 
-                        <button onClick={clearCompleted}>
-                          Clear Completed
-                        </button>
-                      </div>
-                       
-                       {filteredTasks.length === 0 ? (
-                    <div className="empty-state">
-                      <h3>📝 No tasks yet</h3>
-                      <p>Add your first task above.</p>
-                    </div>
-                  ) : (
-                    filteredTasks.map((task) => (
-                      <div
-                        key={task.id}
-                        className={`task-item ${task.completed ? "completed" : ""}`}
-                      >
-                        {editingIndex === task.id ? (
-                          <input
-                            type="text"
-                            value={editingText}
-                            onChange={(event) => setEditingText(event.target.value)}
-                            className="todo-input"
-                          />
-                        ) : (
-                          <p onClick={() => toggleComplete(task.id)}>
-                            {task.text}
-                          </p>
-                        )}
+      <TaskCounter
+        totalTasks={totalTasks}
+        activeTasks={activeTasks}
+        completedTasks={completedTasks}
+      />
 
-                        {editingIndex === task.id ? (
-                          <button
-                            className="edit-btn"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              saveTask(task.id);
-                            }}
-                          >
-                            Save
-                          </button>
-                        ) : (
-                          <button
-                            className="edit-btn"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              setEditingIndex(task.id);
-                              setEditingText(task.text);
-                            }}
-                          >
-                            Edit
-                          </button>
-                        )}
+      <FilterButtons
+            filter={filter}
+            setFilter={setFilter}
+            clearCompleted={clearCompleted}
+    />
 
-                        <button
-                          className="delete-btn"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            deleteTask(task.id);
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    ))
-                  )}
+    {filteredTasks.length === 0 ? (
+              <div className="empty-state">
+                <h3>📝 No tasks yet</h3>
+                <p>Add your first task above.</p>
+              </div>
+            ) : (
+              filteredTasks.map((task) => (
+    <TaskItem
+                key={task.id}
+                task={task}
+                editingIndex={editingIndex}
+                editingText={editingText}
+                setEditingText={setEditingText}
+                toggleComplete={toggleComplete}
+                saveTask={saveTask}
+                setEditingIndex={setEditingIndex}
+                deleteTask={deleteTask}
+    />
+     ))
+   )}
+      
 
-            </div>
-    </>      
-  );
+</div>
+  </>
+);
 }
