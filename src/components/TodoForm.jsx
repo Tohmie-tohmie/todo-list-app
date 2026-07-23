@@ -145,8 +145,19 @@ const filteredTasks = tasks.filter((task) => {
     Low: 3,
   };
 
-  return priorityOrder[a.priority] - priorityOrder[b.priority];
+  const priorityDifference =
+    priorityOrder[a.priority] - priorityOrder[b.priority];
+
+  if (priorityDifference !== 0) {
+    return priorityDifference;
+  }
+
+  if (!a.dueDate) return 1;
+  if (!b.dueDate) return -1;
+
+  return new Date(a.dueDate) - new Date(b.dueDate);
 });
+
  const totalTasks = tasks.length;
 
  const activeTasks = tasks.filter((task) => !task.completed).length;
