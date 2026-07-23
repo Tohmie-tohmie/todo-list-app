@@ -9,9 +9,9 @@ export function TaskItem({
   deleteTask,
 }) {
   return (
-    <div
-      className={`task-item ${task.completed ? "completed" : ""}`}
-    >
+      <div
+          className={`task-item ${task.completed ? "completed" : ""} ${task.priority?.toLowerCase()}`}
+>
       <div className="task-content">
 
         {editingIndex === task.id ? (
@@ -23,16 +23,24 @@ export function TaskItem({
           />
         ) : (
           <>
-            <p onClick={() => toggleComplete(task.id)}>
-              {task.text}
-            </p>
+  <p onClick={() => toggleComplete(task.id)}>
+    {task.text}
+  </p>
 
-            {task.dueDate && (
-              <small className="due-date">
-                Due: {task.dueDate}
-              </small>
-            )}
-          </>
+  {task.dueDate && (
+    <small className="due-date">
+      📅 Due: {task.dueDate}
+    </small>
+  )}
+
+  {task.priority && (
+  <small className={`priority ${task.priority.toLowerCase()}`}>
+    {task.priority === "High" && "🔴 High"}
+    {task.priority === "Medium" && "🟡 Medium"}
+    {task.priority === "Low" && "🟢 Low"}
+  </small>
+)}
+</>
         )}
 
       </div>

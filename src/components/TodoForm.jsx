@@ -20,6 +20,7 @@ export function TodoForm() {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [priority, setPriority] = useState("Medium");
 
   
 
@@ -49,17 +50,19 @@ export function TodoForm() {
   }
 
   setTasks([
-    ...tasks,
-    {
-      id: Date.now(),
-      text: task,
-      completed: false,
-      dueDate,
-    },
- ]);
+  ...tasks,
+  {
+    id: Date.now(),
+    text: task,
+    completed: false,
+    dueDate,
+    priority,
+  },
+]);
 
   setTask("");
   setDueDate("");
+  setPriority("Medium");
 }
 
   function deleteTask(idToDelete) {
@@ -135,6 +138,15 @@ const filteredTasks = tasks.filter((task) => {
   return true;
 });
 
+ const sortedTasks = [...filteredTasks].sort((a, b) => {
+  const priorityOrder = {
+    High: 1,
+    Medium: 2,
+    Low: 3,
+  };
+
+  return priorityOrder[a.priority] - priorityOrder[b.priority];
+});
  const totalTasks = tasks.length;
 
  const activeTasks = tasks.filter((task) => !task.completed).length;
@@ -145,29 +157,39 @@ const filteredTasks = tasks.filter((task) => {
  return (
   <>
     <div className="todo-form">
-      <input
+     <input
         className="todo-input"
         type="text"
         placeholder="Enter a task..."
         value={task}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-      />
+    />
 
-      <input
+    <input
         className="date-input"
         type="date"
         value={dueDate}
         onChange={(event) => setDueDate(event.target.value)}
-      />
+   />
 
-      <button
-        className="add-btn"
-        onClick={handleSubmit}
-      >
+  <select
+          className="priority-select"
+          value={priority}
+          onChange={(event) => setPriority(event.target.value)}
+  >
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+  </select>
+
+ <button
+          className="add-btn"
+          onClick={handleSubmit}
+  >
         Add Task
-      </button>
-   </div>
+   </button>
+ </div>
 
     <SearchBar
       search={search}
@@ -194,7 +216,7 @@ const filteredTasks = tasks.filter((task) => {
                 <p>Add your first task above.</p>
               </div>
             ) : (
-              filteredTasks.map((task) => (
+             sortedTasks.map((task) => (
     <TaskItem
                 key={task.id}
                 task={task}

@@ -255,3 +255,50 @@ h1 {
   color: #666;
   font-size: 13px;
 }
+
+.priority-select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+}
+
+.priority-select:focus {
+  border-color: hsl(210, 100%, 50%);
+}
+
+.priority {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.priority.high {
+  color: #d32f2f;
+}
+
+.priority.medium {
+  color: #f9a825;
+}
+
+.priority.low {
+  color: #388e3c;
+}
+
+.task-item.high {
+  border-left: 6px solid #e53935;
+  background-color: #fff5f5;
+}
+
+.task-item.medium {
+  border-left: 6px solid #fbc02d;
+  background-color: #fffdf2;
+}
+
+.task-item.low {
+  border-left: 6px solid #43a047;
+  background-color: #f5fff5;
+}
