@@ -8,6 +8,36 @@ export function TaskItem({
   setEditingIndex,
   deleteTask,
 }) {
+
+  const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const dueDate = task.dueDate ? new Date(task.dueDate) : null;
+
+  const isOverdue =
+  dueDate &&
+  dueDate < today &&
+  !task.completed;
+
+  function formatDueDate(date) {
+  if (!date) return '';
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const due = new Date(date);
+  due.setHours(0, 0, 0, 0);
+
+  const difference =
+    Math.floor((due - today) / (1000 * 60 * 60 * 24));
+
+  if (difference === 0) return 'Due Today';
+  if (difference === 1) return 'Due Tomorrow';
+  if (difference === -1) return 'Yesterday';
+  if (difference > 1) return `In ${difference} days`;
+  return `${Math.abs(difference)} days ago`;
+}
+
   return (
       <div
           className={`task-item ${task.completed ? "completed" : ""} ${task.priority?.toLowerCase()}`}
@@ -23,13 +53,19 @@ export function TaskItem({
           />
         ) : (
           <>
-  <p onClick={() => toggleComplete(task.id)}>
-    {task.text}
+  {isOverdue && (
+  <p className="overdue-warning">
+    ⚠ OVERDUE
   </p>
+)}
+
+<p onClick={() => toggleComplete(task.id)}>
+  {task.text}
+</p>
 
   {task.dueDate && (
     <small className="due-date">
-      📅 Due: {task.dueDate}
+      📅 {formatDueDate(task.dueDate)}
     </small>
   )}
 
