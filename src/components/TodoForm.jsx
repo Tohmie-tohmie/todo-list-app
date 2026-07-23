@@ -4,6 +4,8 @@ import { TaskCounter } from './TaskCounter';
 import { SearchBar } from './SearchBar';
 import { FilterButtons } from './FilterButtons';
 import { TaskItem } from './TaskItem';
+import { ThemeToggle } from '../ThemeToggle';
+import { ProgressBar } from '../ProgressBar';
 
 
 
@@ -21,6 +23,7 @@ export function TodoForm() {
   const [search, setSearch] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("Medium");
+  const [darkMode, setDarkMode] = useState(false);
 
   
 
@@ -117,6 +120,14 @@ useEffect(() => {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }, [tasks]);
 
+useEffect(() => {
+  if (darkMode) {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
+  }
+}, [darkMode]);
+
 
 const filteredTasks = tasks.filter((task) => {
   const matchesSearch = task.text
@@ -164,9 +175,20 @@ const filteredTasks = tasks.filter((task) => {
 
  const completedTasks = tasks.filter((task) => task.completed).length;
 
+ const allCompleted =
+  totalTasks > 0 &&
+  completedTasks === totalTasks;
+
+ 
+
 
  return (
   <>
+    <ThemeToggle
+      darkMode={darkMode}
+      setDarkMode={setDarkMode}
+    />
+
     <div className="todo-form">
      <input
         className="todo-input"
@@ -215,11 +237,21 @@ const filteredTasks = tasks.filter((task) => {
         completedTasks={completedTasks}
       />
 
+      <ProgressBar
+          totalTasks={totalTasks}
+          completedTasks={completedTasks}
+      />
       <FilterButtons
             filter={filter}
             setFilter={setFilter}
             clearCompleted={clearCompleted}
     />
+     {allCompleted && (
+       <div className="success-message">
+       <h2>🎉 Congratulations!</h2>
+       <p>You completed all your tasks!</p>
+     </div>
+   )}
 
     {filteredTasks.length === 0 ? (
               <div className="empty-state">
