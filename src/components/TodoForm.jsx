@@ -6,6 +6,8 @@ import { FilterButtons } from './FilterButtons';
 import { TaskItem } from './TaskItem';
 import { ThemeToggle } from '../ThemeToggle';
 import { ProgressBar } from '../ProgressBar';
+import { Toast } from '../Toast';
+import Confetti from 'react-confetti';
 
 
 
@@ -24,6 +26,8 @@ export function TodoForm() {
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [darkMode, setDarkMode] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  
 
   
 
@@ -48,8 +52,13 @@ export function TodoForm() {
   );
 
   if (taskExists) {
-    alert("Task already exists!");
-    return;
+    setToastMessage("⚠️ Task already exists!");
+
+      setTimeout(() => {
+      setToastMessage("");
+   }, 3000);
+
+return;
   }
 
   setTasks([
@@ -66,15 +75,29 @@ export function TodoForm() {
   setTask("");
   setDueDate("");
   setPriority("Medium");
+
+  setToastMessage("✅ Task added successfully!");
+
+      setTimeout(() => {
+        setToastMessage("");
+      }, 3000);
+
 }
 
+  
   function deleteTask(idToDelete) {
      const updatedTasks = tasks.filter((task) => {
     return task.id !== idToDelete;
   });
 
   setTasks(updatedTasks);
-}
+
+  setToastMessage("🗑️ Task deleted successfully!");
+
+    setTimeout(() => {
+      setToastMessage("");
+    }, 3000);
+  }
 
 function toggleComplete(idToToggle) {
   const updatedTasks = tasks.map((task) => {
@@ -114,6 +137,12 @@ function clearCompleted() {
   });
 
   setTasks(activeTasks);
+
+  setToastMessage("🧹 Completed tasks cleared!");
+
+  setTimeout(() => {
+    setToastMessage("");
+  }, 3000);
 }
 
 useEffect(() => {
@@ -127,6 +156,9 @@ useEffect(() => {
     document.body.classList.remove("dark-mode");
   }
 }, [darkMode]);
+
+  
+
 
 
 const filteredTasks = tasks.filter((task) => {
@@ -169,7 +201,8 @@ const filteredTasks = tasks.filter((task) => {
   return new Date(a.dueDate) - new Date(b.dueDate);
 });
 
- const totalTasks = tasks.length;
+
+  const totalTasks = tasks.length;
 
  const activeTasks = tasks.filter((task) => !task.completed).length;
 
@@ -179,8 +212,6 @@ const filteredTasks = tasks.filter((task) => {
   totalTasks > 0 &&
   completedTasks === totalTasks;
 
- 
-
 
  return (
   <>
@@ -188,6 +219,15 @@ const filteredTasks = tasks.filter((task) => {
       darkMode={darkMode}
       setDarkMode={setDarkMode}
     />
+
+    <Toast message={toastMessage} />
+
+    {allCompleted && (
+  <Confetti
+    width={window.innerWidth}
+    height={window.innerHeight}
+  />
+)}
 
     <div className="todo-form">
      <input
