@@ -8,6 +8,7 @@ import { ThemeToggle } from '../ThemeToggle';
 import { ProgressBar } from '../ProgressBar';
 import { Toast } from '../Toast';
 import Confetti from 'react-confetti';
+import { Statistics } from './Statistics';
 
 
 
@@ -86,7 +87,12 @@ return;
 
   
   function deleteTask(idToDelete) {
-     const updatedTasks = tasks.filter((task) => {
+
+  if (!window.confirm("Are you sure you want to delete this task?")) {
+    return;
+  }
+
+  const updatedTasks = tasks.filter((task) => {
     return task.id !== idToDelete;
   });
 
@@ -94,10 +100,10 @@ return;
 
   setToastMessage("🗑️ Task deleted successfully!");
 
-    setTimeout(() => {
-      setToastMessage("");
-    }, 3000);
-  }
+  setTimeout(() => {
+    setToastMessage("");
+  }, 3000);
+}
 
 function toggleComplete(idToToggle) {
   const updatedTasks = tasks.map((task) => {
@@ -212,6 +218,35 @@ const filteredTasks = tasks.filter((task) => {
   totalTasks > 0 &&
   completedTasks === totalTasks;
 
+  const completionRate =
+  totalTasks === 0
+    ? 0
+    : Math.round((completedTasks / totalTasks) * 100);
+
+const highPriority = tasks.filter(
+  (task) => task.priority === "High"
+).length;
+
+const mediumPriority = tasks.filter(
+  (task) => task.priority === "Medium"
+).length;
+
+const lowPriority = tasks.filter(
+  (task) => task.priority === "Low"
+).length;
+
+const overdueTasks = tasks.filter((task) => {
+  if (!task.dueDate || task.completed) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const due = new Date(task.dueDate);
+  due.setHours(0, 0, 0, 0);
+
+  return due < today;
+}).length;
+
 
  return (
   <>
@@ -281,6 +316,18 @@ const filteredTasks = tasks.filter((task) => {
           totalTasks={totalTasks}
           completedTasks={completedTasks}
       />
+    
+      <Statistics
+          totalTasks={totalTasks}
+          completedTasks={completedTasks}
+          activeTasks={activeTasks}
+          completionRate={completionRate}
+          highPriority={highPriority}
+          mediumPriority={mediumPriority}
+          lowPriority={lowPriority}
+          overdueTasks={overdueTasks}
+      />
+
       <FilterButtons
             filter={filter}
             setFilter={setFilter}
@@ -296,7 +343,7 @@ const filteredTasks = tasks.filter((task) => {
     {filteredTasks.length === 0 ? (
               <div className="empty-state">
                 <h3>📝 No tasks yet</h3>
-                <p>Add your first task above.</p>
+               <p>Nothing here yet. Add your first task and start being productive! 🚀</p>
               </div>
             ) : (
              sortedTasks.map((task) => (
