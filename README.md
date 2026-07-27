@@ -1,16 +1,49 @@
-# React + Vite
+# TaskFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern and responsive task management application built with React to help users organize, prioritize, and track their daily tasks.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+https://todo-list-app-oncz.vercel.app/
 
-## React Compiler
+## 📂 GitHub Repository
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+https://github.com/Tohmie-tohmie/todo-list-app
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Add new tasks
+- Edit existing tasks
+- Delete tasks
+- Mark tasks as completed
+- Search tasks
+- Filter tasks
+- Set task priorities
+- Assign due dates
+- Dark Mode
+- Progress tracking
+- Statistics dashboard
+- Toast notifications
+- Responsive design
+- Local Storage support
+
+## 🛠 Tech Stack
+
+- React
+- JavaScript (ES6+)
+- CSS3
+- HTML5
+- Vite
+- Git
+- GitHub
+- Vercel
+
+## 📸 Screenshot
+
+Coming soon.
+
+## 👩‍💻 Author
+
+**Oluwatomisin Ajayi**
+
+Frontend Developer
