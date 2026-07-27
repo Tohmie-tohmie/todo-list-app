@@ -1,49 +1,50 @@
-# TaskFlow
+# 📋 TaskFlow
 
-A modern and responsive task management application built with React to help users organize, prioritize, and track their daily tasks.
+TaskFlow is a modern and responsive task management application built with React. It helps users organize their daily tasks efficiently with features like task priorities, due dates, search, filtering, dark mode, and progress tracking.
 
 ## 🚀 Live Demo
 
 https://todo-list-app-oncz.vercel.app/
 
-## 📂 GitHub Repository
+---
 
-https://github.com/Tohmie-tohmie/todo-list-app
+## 📸 Screenshot
+
+![TaskFlow Home](images/taskflow-home.png)
+
+---
 
 ## ✨ Features
 
-- Add new tasks
-- Edit existing tasks
-- Delete tasks
-- Mark tasks as completed
-- Search tasks
-- Filter tasks
-- Set task priorities
-- Assign due dates
-- Dark Mode
-- Progress tracking
-- Statistics dashboard
-- Toast notifications
-- Responsive design
-- Local Storage support
+- ✅ Add new tasks
+- ✏️ Edit tasks
+- 🗑️ Delete tasks
+- ✔️ Mark tasks as completed
+- 🔍 Search tasks
+- 🎯 Filter tasks (All, Active, Completed)
+- 📅 Due dates
+- 🚨 Priority levels (High, Medium, Low)
+- 🌙 Dark Mode
+- 📊 Statistics Dashboard
+- 📈 Progress Bar
+- 🎉 Confetti celebration when all tasks are completed
+- 💾 Local Storage support
+- 📱 Fully Responsive Design
 
-## 🛠 Tech Stack
+---
+
+## 🛠️ Built With
 
 - React
 - JavaScript (ES6+)
 - CSS3
-- HTML5
 - Vite
-- Git
-- GitHub
-- Vercel
 
-## 📸 Screenshot
+---
 
-Coming soon.
+## 📦 Installation
 
-## 👩‍💻 Author
+Clone the repository:
 
-**Oluwatomisin Ajayi**
-
-Frontend Developer
+```bash
+git clone https://github.com/Tohmie-tohmie/todo-list-app.git
