@@ -59,8 +59,8 @@ export function TaskItem({
   </p>
 )}
 
-<p onClick={() => toggleComplete(task.id)}>
-  {task.text}
+<p>
+  <input type="checkbox" onChange={() => toggleComplete(task.id)}/>{task.text}
 </p>
 
   {task.dueDate && (
